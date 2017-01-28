@@ -1,0 +1,25 @@
+# User-specific stuff:
+.idea
+
+## File-based project format:
+*.iws
+
+### Node template
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Dependency directories
+node_modules
+.DS_Store
+
+# Optional npm cache directory
+.npm
+
