@@ -6,6 +6,7 @@ const path = require('path');
 const req = require('request');
 const Twitter = require('twitter');
 const colors = require('colors');
+const moment = require('moment');
 
 const twitterKeys = keys.twitterKeys;
 
@@ -41,16 +42,20 @@ const runCommand = (command) => {
     switch (command) {
         case "my-tweets":
             myTweets();
+            logCommand('my-tweets', '', '');
         break;
 
         case "spotify-this-song":
             searchSpotifySong(commandString, parseInt(extraCommands) ? parseInt(extraCommands) : 1);
+            logCommand('spotify-this-song', `"${commandString}"`, extraCommands);
         break;
 
         case "movie-this":
+            logCommand('movie-this', commandString, '');
         break;
 
         case "do-what-it-says":
+            logCommand('do-what-it-says', '', '');
         break;
 
         default:
@@ -73,7 +78,9 @@ const myTweets = (username = 'totallypr') => {
 
         let i = 0;
         tweets.forEach(function() {
-            console.log(tweets[i].text);
+            let time = moment(tweets[i].created_at, 'dd MMM DD HH:mm:ss ZZ YYYY', 'en').format('MM/DD/YYYY hh:mm A');
+
+            console.log(`${time}: ${tweets[i].text}`);
             i++;
         });
 
@@ -127,6 +134,25 @@ const readRandomTextFile = () => {
     io.readFile(randomTextFile, 'utf-8', function (err, data) {
         console.log(data);
     });
+};
+
+const logCommand = (command, commandValue, extraCommands, callback) => {
+    if (command == null || commandValue == null)
+        throw new TypeError('Missing params');
+
+    if (!extraCommands)
+        io.appendFile(randomTextFile, `\n${command},${commandValue},${extraCommands}`, function(err) {
+            if (err)
+                throw err;
+        });
+    else
+        io.appendFile(randomTextFile, `\n${command},${commandValue}`, function(err) {
+            if (err)
+                throw err;
+        });
+
+    if(callback)
+        callback();
 };
 
 // Runs when the program is started.

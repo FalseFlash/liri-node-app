@@ -18,6 +18,7 @@
   "homepage": "https://github.com/FalseFlash/liri-node-app#readme",
   "dependencies": {
     "colors": "^1.1.2",
+    "moment": "^2.17.1",
     "request": "^2.79.0",
     "twitter": "^1.7.0"
   }
