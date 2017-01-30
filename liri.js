@@ -136,6 +136,10 @@ const searchSpotifySong = (song = 'the sign', listLimit = 1) => {
     });
 };
 
+/**
+ * Searching the movie API for information.
+ * @param movie
+ */
 const searchMovieAPI = (movie = 'mr nobody') => {
        /* Title of the movie.
         Year the movie came out.
