@@ -2,6 +2,7 @@
 
 const keys = require('./keys');
 const io = require('fs');
+const readline = require('readline');
 const path = require('path');
 const req = require('request');
 const Twitter = require('twitter');
@@ -12,10 +13,17 @@ const twitterKeys = keys.twitterKeys;
 
 const randomTextFile = path.join(__dirname, 'random.txt');
 
-const command = process.argv[2];
-const commandString = process.argv[3];
+const file = readline.createInterface({
+    input: io.createReadStream(randomTextFile),
+    output: process.stdout,
+    terminal: false
+});
 
-const extraCommands = process.argv[4];
+let command = process.argv[2];
+let commandString = process.argv[3];
+let extraCommands = process.argv[4];
+
+let preventWrite = false;
 
 const twitter = new Twitter(twitterKeys);
 
@@ -47,7 +55,7 @@ const runCommand = (command) => {
 
         case "spotify-this-song":
             searchSpotifySong(commandString, parseInt(extraCommands) ? parseInt(extraCommands) : 1);
-            logCommand('spotify-this-song', `"${commandString}"`, extraCommands);
+            logCommand('spotify-this-song', `${commandString}`, extraCommands);
         break;
 
         case "movie-this":
@@ -55,7 +63,7 @@ const runCommand = (command) => {
         break;
 
         case "do-what-it-says":
-            logCommand('do-what-it-says', '', '');
+            readRandomTextFile();
         break;
 
         default:
@@ -131,16 +139,37 @@ const searchSpotifySong = (song = 'the sign', listLimit = 1) => {
  * Read the random.txt file.
  */
 const readRandomTextFile = () => {
-    io.readFile(randomTextFile, 'utf-8', function (err, data) {
-        console.log(data);
+    preventWrite = true;
+
+    file.on('line', function(data) {
+        let split = data.split(',');
+
+        command = split[0];
+        commandString = split[1];
+        extraCommands = split[2];
+
+        runCommand(command);
     });
 };
 
+/**
+ * Log the command to file.
+ * @param command
+ * @param commandValue
+ * @param extraCommands
+ * @param callback
+ */
 const logCommand = (command, commandValue, extraCommands, callback) => {
+    if (preventWrite === true)
+        return;
+
     if (command == null || commandValue == null)
         throw new TypeError('Missing params');
 
-    if (!extraCommands)
+    if (command == 'do-what-it-says')
+        throw new Error('Command will result in a loop');
+
+    if (extraCommands !== '')
         io.appendFile(randomTextFile, `\n${command},${commandValue},${extraCommands}`, function(err) {
             if (err)
                 throw err;
@@ -157,4 +186,3 @@ const logCommand = (command, commandValue, extraCommands, callback) => {
 
 // Runs when the program is started.
 main();
-//readRandomTextFile();
