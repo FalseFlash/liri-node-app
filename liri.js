@@ -59,7 +59,8 @@ const runCommand = (command) => {
         break;
 
         case "movie-this":
-            logCommand('movie-this', commandString, '');
+            searchMovieAPI(commandString);
+            logCommand('movie-this',  commandString ? commandString : '', '');
         break;
 
         case "do-what-it-says":
@@ -132,6 +133,32 @@ const searchSpotifySong = (song = 'the sign', listLimit = 1) => {
         if (curListCount == 0)
             return console.log(`We could not find the song you were looking for.`.yellow);
 
+    });
+};
+
+const searchMovieAPI = (movie = 'mr nobody') => {
+       /* Title of the movie.
+        Year the movie came out.
+        IMDB Rating of the movie.
+        Country where the movie was produced.
+        Language of the movie.
+        Plot of the movie.
+        Actors in the movie.
+        Rotten Tomatoes Rating.
+        Rotten Tomatoes URL.*/
+
+    req(`http://www.omdbapi.com/?t=${movie}&plot=short&r=json&tomatoes=true`, function (err, res) {
+        const json = JSON.parse(res.body);
+
+        const title = json.Title;
+        const year = json.Year;
+        const imdbRating = json.imdbRating;
+        const plot = json.Plot;
+        const actors = json.Actors;
+        const tomatoRating = json.tomatoRating;
+        const tomatoURL = json.tomatoURL;
+
+        console.log(`Title: ${title}\nYear: ${year}\nIMDB Rating: ${imdbRating}\nPlot: ${plot}\nActors: ${actors}\nTomaato Rating: ${tomatoRating}\nTomato URL ${tomatoURL}`);
     });
 };
 
