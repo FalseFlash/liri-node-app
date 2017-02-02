@@ -162,7 +162,7 @@ const searchMovieAPI = (movie = 'mr nobody') => {
         const tomatoRating = json.tomatoRating;
         const tomatoURL = json.tomatoURL;
 
-        console.log(`Title: ${title}\nYear: ${year}\nIMDB Rating: ${imdbRating}\nPlot: ${plot}\nActors: ${actors}\nTomaato Rating: ${tomatoRating}\nTomato URL ${tomatoURL}`);
+        console.log(`Title: ${title}\nYear: ${year}\nIMDB Rating: ${imdbRating}\nPlot: ${plot}\nActors: ${actors}\nTomato Rating: ${tomatoRating}\nTomato URL ${tomatoURL}`);
     });
 };
 
