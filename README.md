@@ -18,7 +18,6 @@ First, clone the project:
 git clone https://github.com/FalseFlash/liri-node-app.git
 ```
 
-<br />
 
 Inside of the folder in which you've cloned the files to, run the following command:
 ```
