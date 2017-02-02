@@ -13,8 +13,14 @@ These instructions will get you a copy of the project up and running on your loc
 To run this application you will need Node.JS and NPM installed on your system.
 
 ### Installing
+First, clone the project:
+```
+git clone https://github.com/FalseFlash/liri-node-app.git
+```
 
-Inside of the folder in which you extracted the files to, run the following command:
+<br />
+
+Inside of the folder in which you've cloned the files to, run the following command:
 ```
 npm install
 ```
